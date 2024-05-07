@@ -1,0 +1,12 @@
+---
+title: "From RNA to Protein: a Bayesian model of the Central Dogma"
+bibliography: bibliography.bib
+reference-location: margin
+format:
+  html:
+    standalone: true
+    toc: true
+    code-fold: true
+  docx: default
+---
+
