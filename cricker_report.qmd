@@ -14,7 +14,39 @@ Development of a Bayesian inference model to go from mRNA transcripts to protein
 
 ## Model definition
 
+Since the data extracted from @balakrishnanPrinciplesGeneRegulation2022 are quasi-compositions (there are still 0 values in some of the transcriptomics samples), we would
+like to use a model suitable for compositional data (vectors in the simplex), described in @eq-diri-model,
 
+$$
+\begin{align}
+R &\sim D(1) \\
+\delta &\sim lN(0.25, 5) \\
+P &\sim D(R * \delta) \\
+\alpha_r, \alpha_p &\sim InvGamma(0.5,1)\\
+\psi_m &\sim D(\alpha_r R)\\
+\psi_p &\sim D(\alpha_p P) \\
+\end{align}
+$$ {#eq-diri-model}
+
+where $R$ and $P$ are matrix of the true distributions of number fractions of
+mRNA and proteins, respectively; $D$ is the row-wise Dirichlet distribution;
+$lN$ is the log-Normal distribution;  $\delta$ is a vector of translation rates
+(one per transcript); $\alpha$ are dispersion parameters for the measurement
+models; and $\psi_m$ and $\psi_p$ are the observed number fractions of mRNA and
+proteins, respectively.
+
+The measurement model are two Dirichlet distributions drawn from the true
+compositions $R$ and $P$. The $\alpha$ parameters are there to account for
+uncertainty/dispersion of the compositions in the measurement model; while
+compositional data is invariant to multiplication by positive-constants, the
+prior of the Dirichlet encodes both the fractions and the dispersion of each
+component. Hence, the magnitude $\alpha$ of the closure is relevant and it is
+fitted during inference.
+
+This model needs a careful treatment of the conditions and replicates: we would
+like for $R$ and $P$ to be matrices containing a row for each condition. Thus,
+they need to be sampled accordingly to generate the "runs" or biological replicates in $\psi$. 
+A more challenging issue about the conditions is explained in the next section.
 
 ## Data preprocessing
 
