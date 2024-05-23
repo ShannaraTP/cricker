@@ -1,43 +1,43 @@
 ID,Original sample ID transcriptomics,Original sample ID proteomics,Group,Growth rate transcriptomics,Growth rate proteomics,Strain,Supplement,Description
 C0_r1,c5,C2,C-limitation,0.91,0.91,NCM3722,,NCM3722 (wild type) in M9 medium
 C0_r2,c0_1,,C-limitation,0.95,,NCM3722,,NCM3722 (wild type) in M9 medium
-C1_r1,,C3,C-limitation,,0.77,NQ1243,400 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-C1_r2,,F4,C-limitation,,0.81,NQ1243,400 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-C2_r1,c1,,C-limitation,0.75,,NQ1243,300 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-C2_r2,c1_1,,C-limitation,0.78,,NQ1243,300 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-C3_r1,,C4,C-limitation,,0.69,NQ1243,100 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-C3_r2,,C8,C-limitation,,0.72,NQ1243,100 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-C3_r3,,F5,C-limitation,,0.71,NQ1243,100 然 3MBA,Titratable glucose uptake (Pu-ptsG)
+C1_r1,,C3,C-limitation,,0.77,NQ1243,400 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+C1_r2,,F4,C-limitation,,0.81,NQ1243,400 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+C2_r1,c1,,C-limitation,0.75,,NQ1243,300 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+C2_r2,c1_1,,C-limitation,0.78,,NQ1243,300 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+C3_r1,,C4,C-limitation,,0.69,NQ1243,100 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+C3_r2,,C8,C-limitation,,0.72,NQ1243,100 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+C3_r3,,F5,C-limitation,,0.71,NQ1243,100 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
 C4_r1,c2,C5,C-limitation,0.56,0.56,NQ1243,,Titratable glucose uptake (Pu-ptsG)
 C4_r2,c2_1,D6,C-limitation,0.59,0.56,NQ1243,,Titratable glucose uptake (Pu-ptsG)
 C4_r3,,F6,C-limitation,,0.55,NQ1243,,Titratable glucose uptake (Pu-ptsG)
-C5_r1,c3,C6,C-limitation,0.51,0.48,NQ1390,400 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-C5_r2,c3_1,D8,C-limitation,0.46,0.49,NQ1390,400 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-C5_r3,,F7,C-limitation,,0.5,NQ1390,400 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-C6_r1,c4,C7,C-limitation,0.3,0.35,NQ1390,40 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-C6_r2,c4_1,D7,C-limitation,0.39,0.33,NQ1390,40 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-C6_r3,,F8,C-limitation,,0.34,NQ1390,40 然 3MBA,Titratable glucose uptake (Pu-ptsG)
-A1_r1,,D5,A-limitation,,0.91,NQ393,100 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
-A1_r2,,F2,A-limitation,,0.89,NQ393,100 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
-A1_r3,,F3,A-limitation,,0.84,NQ393,100 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
-A2_r1,a1,,A-limitation,0.69,,NQ393,60 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
-A2_r2,a1_1,,A-limitation,0.76,,NQ393,60 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
-A3_r1,,D4,A-limitation,,0.67,NQ393,50 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
-A4_r1,a2,D3,A-limitation,0.51,0.54,NQ393,40 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
-A4_r2,a2_1,,A-limitation,0.55,,NQ393,40 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
-A5_r1,a3,D2,A-limitation,0.33,0.36,NQ393,30 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
-A5_r2,,,A-limitation,,,NQ393,30 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
-A6_r1,a4,D1,A-limitation,0.24,0.22,NQ393,20 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
-A6_r2,a4_1,,A-limitation,0.34,,NQ393,20 然 IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+C5_r1,c3,C6,C-limitation,0.51,0.48,NQ1390,400 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+C5_r2,c3_1,D8,C-limitation,0.46,0.49,NQ1390,400 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+C5_r3,,F7,C-limitation,,0.5,NQ1390,400 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+C6_r1,c4,C7,C-limitation,0.3,0.35,NQ1390,40 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+C6_r2,c4_1,D7,C-limitation,0.39,0.33,NQ1390,40 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+C6_r3,,F8,C-limitation,,0.34,NQ1390,40 microM 3MBA,Titratable glucose uptake (Pu-ptsG)
+A1_r1,,D5,A-limitation,,0.91,NQ393,100 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+A1_r2,,F2,A-limitation,,0.89,NQ393,100 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+A1_r3,,F3,A-limitation,,0.84,NQ393,100 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+A2_r1,a1,,A-limitation,0.69,,NQ393,60 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+A2_r2,a1_1,,A-limitation,0.76,,NQ393,60 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+A3_r1,,D4,A-limitation,,0.67,NQ393,50 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+A4_r1,a2,D3,A-limitation,0.51,0.54,NQ393,40 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+A4_r2,a2_1,,A-limitation,0.55,,NQ393,40 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+A5_r1,a3,D2,A-limitation,0.33,0.36,NQ393,30 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+A5_r2,,,A-limitation,,,NQ393,30 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+A6_r1,a4,D1,A-limitation,0.24,0.22,NQ393,20 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
+A6_r2,a4_1,,A-limitation,0.34,,NQ393,20 microM IPTG,Titratable ammonia assimilation (Plac-GOGAT)
 R0_r1,r0,A2,R_limitation,0.89,0.98,NCM3722,,NCM3722 (wild type) in MOPS medium
 R0_r2,r0_1,H1,R_limitation,0.91,0.98,NCM3722,,NCM3722 (wild type) in MOPS medium
 R0_r3,,H5,R_limitation,,0.97,NCM3722,,NCM3722 (wild type) in MOPS medium
-R1_r1,r1,E1,R_limitation,0.71,0.79,NCM3722,2 然 chloramphenicol,NCM3722 (wild type) in MOPS medium
-R1_r2,r1_1,,R_limitation,0.61,,NCM3722,2 然 chloramphenicol,NCM3722 (wild type) in MOPS medium
-R2_r1,r2,E2,R_limitation,0.53,0.61,NCM3722,4 然 chloramphenicol,NCM3722 (wild type) in MOPS medium
-R2_r2,r2_1,,R_limitation,0.44,,NCM3722,4 然 chloramphenicol,NCM3722 (wild type) in MOPS medium
-R3_r1,r3,E3,R_limitation,0.45,0.49,NCM3722,6 然 chloramphenicol,NCM3722 (wild type) in MOPS medium
-R3_r2,r3_1,,R_limitation,0.35,,NCM3722,6 然 chloramphenicol,NCM3722 (wild type) in MOPS medium
-R4_r1,r4,E4,R_limitation,0.4,0.36,NCM3722,8 然 chloramphenicol,NCM3722 (wild type) in MOPS medium
-R4_r2,r4_1,,R_limitation,0.28,,NCM3722,8 然 chloramphenicol,NCM3722 (wild type) in MOPS medium
-R5_r1,r5,,R_limitation,0.38,,NCM3722,9 然 chloramphenicol,NCM3722 (wild type) in MOPS medium
+R1_r1,r1,E1,R_limitation,0.71,0.79,NCM3722,2 microM chloramphenicol,NCM3722 (wild type) in MOPS medium
+R1_r2,r1_1,,R_limitation,0.61,,NCM3722,2 microM chloramphenicol,NCM3722 (wild type) in MOPS medium
+R2_r1,r2,E2,R_limitation,0.53,0.61,NCM3722,4 microM chloramphenicol,NCM3722 (wild type) in MOPS medium
+R2_r2,r2_1,,R_limitation,0.44,,NCM3722,4 microM chloramphenicol,NCM3722 (wild type) in MOPS medium
+R3_r1,r3,E3,R_limitation,0.45,0.49,NCM3722,6 microM chloramphenicol,NCM3722 (wild type) in MOPS medium
+R3_r2,r3_1,,R_limitation,0.35,,NCM3722,6 microM chloramphenicol,NCM3722 (wild type) in MOPS medium
+R4_r1,r4,E4,R_limitation,0.4,0.36,NCM3722,8 microM chloramphenicol,NCM3722 (wild type) in MOPS medium
+R4_r2,r4_1,,R_limitation,0.28,,NCM3722,8 microM chloramphenicol,NCM3722 (wild type) in MOPS medium
+R5_r1,r5,,R_limitation,0.38,,NCM3722,9 microM chloramphenicol,NCM3722 (wild type) in MOPS medium

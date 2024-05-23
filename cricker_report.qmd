@@ -20,7 +20,7 @@ like to use a model suitable for compositional data (vectors in the simplex), de
 $$
 \begin{align}
 R &\sim D(1) \\
-\delta &\sim lN(0.25, 5) \\
+\delta &\sim lN(1, 1) \\
 P &\sim D(R * \delta) \\
 \alpha_r, \alpha_p &\sim InvGamma(0.5,1)\\
 \psi_m &\sim D(\alpha_r R)\\
@@ -34,6 +34,8 @@ $lN$ is the log-Normal distribution;  $\delta$ is a vector of translation rates
 (one per transcript); $\alpha$ are dispersion parameters for the measurement
 models; and $\psi_m$ and $\psi_p$ are the observed number fractions of mRNA and
 proteins, respectively.
+
+The priors for $\delta$ was chosen to roughly mathc Figure 1D of @balakrishnanPrinciplesGeneRegulation2022.
 
 The measurement model are two Dirichlet distributions drawn from the true
 compositions $R$ and $P$. The $\alpha$ parameters are there to account for
@@ -98,3 +100,98 @@ An overview of the conditions covered in the data sets:
 | R4_r1 | r4                                 | E4                            | R_limitation | 0.4                         | 0.36                   | NCM3722 | 8 µM chloramphenicol | NCM3722 (wild type) in MOPS medium           |
 | R4_r2 | r4_1                               |                               | R_limitation | 0.28                        |                        | NCM3722 | 8 µM chloramphenicol | NCM3722 (wild type) in MOPS medium           |
 | R5_r1 | r5                                 |                               | R_limitation | 0.38                        |                        | NCM3722 | 9 µM chloramphenicol | NCM3722 (wild type) in MOPS medium           |
+
+
+### How do we treat missing data?
+
+The compositions must be greater than 0, but there are those in proteomics.
+
+* Remove genes that are never not-zero in any condition (transcript or protein).
+* If a gene is 0 we can either resolve by indexing in the measurement or add a pseudocount. Either way, we have to close to 1 to make it be a good output of the Dirichilet distribution.
+
+### Data generation of true
+
+We simulate data generation process of true data.
+
+```{python}
+import pandas as pd
+
+df = pd.read_csv("data/transcriptomics_fractions.csv")
+df_meta = pd.read_csv("data/dataset_description.csv" )
+# work only with the ones that coincide for now
+df_meta_both = df_meta.loc[df_meta.iloc[:, 1].notnull() & df_meta.iloc[:, 2].notnull()]
+df_meta_both.iloc[:, :3].head()
+```
+
+Filter transcriptcs/proteins that are not in any condition.
+
+```{python}
+df_prot = pd.read_csv("data/proteomics_fractions.csv")
+effective_prot = (df_prot.iloc[:, 3:]!=0).any(axis=1)
+# just in case, although everything will be true
+effective_mrna = (df.iloc[:, 3:]!=0).any(axis=1)
+df_mrna_filter = df[effective_prot & effective_mrna]
+df_prot_filter = df_prot[effective_prot & effective_mrna]
+N_mrna = df_prot_filter.shape[0]
+N_cond = df_meta_both.shape[0]
+```
+
+From Note S1 in @moriCoarseFineAbsolute2021, the number of proteins per $\mu m^3$ is $3 \cdot 10^6$.
+
+```{python}
+import numpy as np
+
+rng = np.random.default_rng(42)
+# generate R from dirichlet 
+R = rng.dirichlet([1]*N_mrna, N_cond)
+delta = rng.lognormal(1, 1)
+# we multiply by number of molecules per cell-volume to get number of molecules mRNA_i
+Prot_per_cell_liter = 3E6
+P = np.stack(
+  [rng.dirichlet(R[cond, :] * Prot_per_cell_liter * delta)
+  for cond in range(R.shape[0])
+  ]
+)
+assert P.shape == R.shape
+```
+
+For the measurement model:
+
+```{python}
+alpha_mrna = 1 / rng.gamma(0.5, 1);
+alpha_prot = 1 / rng.gamma(0.5, 1);
+phi_mrna_sim = np.stack(
+  [rng.dirichlet(R[cond, :] * alpha_mrna * Prot_per_cell_liter)
+  for cond in range(N_cond)
+  ]
+)
+phi_prot_sim = np.stack(
+  [rng.dirichlet(P[cond, :] * alpha_prot * Prot_per_cell_liter)
+  for cond in range(N_cond)
+  ]
+)
+```
+
+Let's plot the things.
+
+```{python}
+from plotnine import *
+
+df_plot = pd.DataFrame({"prot": phi_prot_sim.flatten(), "mrna": phi_mrna_sim.flatten(), "gene": df_prot_filter.gene.to_list() * N_cond, "condition": df_meta_both.iloc[:, 1].to_list() * N_mrna})
+#df_plot["prot"] = np.log(df_plot["prot"])
+#df_plot["mrna"] = np.log(df_plot["mrna"])
+
+plot = (
+  ggplot(df_plot, aes(x="prot", y="mrna")) + geom_point(alpha=0.5)
+  # + ylab("$\phi$")
+#rotate the x-axis labels
+  + theme(axis_text_x=element_text(angle=90))
+  + facet_wrap("~condition")
+  # log scale for y
+  + scale_y_log10()
+  + scale_x_log10()
+  # both axes bound to 1e-7 to 1e-1
+  #+ coord_cartesian(xlim=[1e-7, 1e-1], ylim=[1e-7, 1e-1])
+)
+plot.show()
+```
