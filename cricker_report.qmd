@@ -21,10 +21,10 @@ $$
 \begin{align}
 R &\sim D(1) \\
 \delta &\sim lN(1, 1) \\
-P &\sim D(R * \delta) \\
+P &\sim D(R \delta n) \\
 \alpha_r, \alpha_p &\sim InvGamma(0.5,1)\\
-\psi_m &\sim D(\alpha_r R)\\
-\psi_p &\sim D(\alpha_p P) \\
+\psi_m &\sim D(\alpha_r n)\\
+\psi_p &\sim D(\alpha_p n) \\
 \end{align}
 $$ {#eq-diri-model}
 
@@ -36,6 +36,8 @@ models; and $\psi_m$ and $\psi_p$ are the observed number fractions of mRNA and
 proteins, respectively.
 
 The priors for $\delta$ was chosen to roughly mathc Figure 1D of @balakrishnanPrinciplesGeneRegulation2022.
+
+n is the scaling factor.
 
 The measurement model are two Dirichlet distributions drawn from the true
 compositions $R$ and $P$. The $\alpha$ parameters are there to account for
@@ -132,11 +134,26 @@ effective_prot = (df_prot.iloc[:, 3:]!=0).any(axis=1)
 effective_mrna = (df.iloc[:, 3:]!=0).any(axis=1)
 df_mrna_filter = df[effective_prot & effective_mrna]
 df_prot_filter = df_prot[effective_prot & effective_mrna]
-N_mrna = df_prot_filter.shape[0]
+N_mrna = N_prot = df_prot_filter.shape[0]
 N_cond = df_meta_both.shape[0]
 ```
 
+```{python}
+from plotnine import *
+
+# plot x axis protein i and y axis mRNA i
+df_plot = pd.DataFrame({"prot": df_prot_filter.iloc[:, 4], "mrna": df_mrna_filter.iloc[:, 4], "gene": df_prot_filter.gene.to_list()})
+plot = (
+  ggplot(df_plot, aes(x="prot", y="mrna")) + geom_point(alpha=0.5)
+  + scale_x_log10()
+  + scale_y_log10()
+)
+plot.show()
+```
+
 From Note S1 in @moriCoarseFineAbsolute2021, the number of proteins per $\mu m^3$ is $3 \cdot 10^6$.
+
+For the number of RNA molecules, we use a ballpark of 2400 molecules per cell volume.
 
 ```{python}
 import numpy as np
@@ -144,16 +161,26 @@ import numpy as np
 rng = np.random.default_rng(42)
 # generate R from dirichlet 
 R = rng.dirichlet([1]*N_mrna, N_cond)
-delta = rng.lognormal(1, 1)
+delta = 2 ** rng.normal(0, 1.2, N_mrna)
+n = 1e6
+print(np.percentile(delta, [0, 25, 50, 75, 100]))
 # we multiply by number of molecules per cell-volume to get number of molecules mRNA_i
-Prot_per_cell_liter = 3E6
 P = np.stack(
-  [rng.dirichlet(R[cond, :] * Prot_per_cell_liter * delta)
+  [rng.dirichlet(R[cond, :] * delta * n)
   for cond in range(R.shape[0])
   ]
 )
 assert P.shape == R.shape
 ```
+```{python}
+# plot delta vector as hist
+df_delta = pd.DataFrame({"delta": delta})
+plot = (
+  ggplot(df_delta, aes(x="delta")) + geom_histogram() + scale_x_log10()
+)
+plot.show()
+```
+
 
 For the measurement model:
 
@@ -161,12 +188,12 @@ For the measurement model:
 alpha_mrna = 1 / rng.gamma(0.5, 1);
 alpha_prot = 1 / rng.gamma(0.5, 1);
 phi_mrna_sim = np.stack(
-  [rng.dirichlet(R[cond, :] * alpha_mrna * Prot_per_cell_liter)
+  [rng.dirichlet(R[cond, :] * alpha_mrna * n)
   for cond in range(N_cond)
   ]
 )
 phi_prot_sim = np.stack(
-  [rng.dirichlet(P[cond, :] * alpha_prot * Prot_per_cell_liter)
+  [rng.dirichlet(P[cond, :] * alpha_prot * n)
   for cond in range(N_cond)
   ]
 )
@@ -178,20 +205,35 @@ Let's plot the things.
 from plotnine import *
 
 df_plot = pd.DataFrame({"prot": phi_prot_sim.flatten(), "mrna": phi_mrna_sim.flatten(), "gene": df_prot_filter.gene.to_list() * N_cond, "condition": df_meta_both.iloc[:, 1].to_list() * N_mrna})
-#df_plot["prot"] = np.log(df_plot["prot"])
-#df_plot["mrna"] = np.log(df_plot["mrna"])
+df_plot = df_plot[(df_plot.mrna > 1e-8) & (df_plot.prot > 1e-8)] 
 
 plot = (
-  ggplot(df_plot, aes(x="prot", y="mrna")) + geom_point(alpha=0.5)
-  # + ylab("$\phi$")
-#rotate the x-axis labels
-  + theme(axis_text_x=element_text(angle=90))
-  + facet_wrap("~condition")
-  # log scale for y
-  + scale_y_log10()
-  + scale_x_log10()
-  # both axes bound to 1e-7 to 1e-1
-  #+ coord_cartesian(xlim=[1e-7, 1e-1], ylim=[1e-7, 1e-1])
+    ggplot(df_plot[df_plot.condition == df_plot.condition[0]], aes(x="prot", y="mrna"))
+    + geom_point(alpha=0.5)
+    # + ylab("$\phi$")
+    # rotate the x-axis labels
+    + theme(axis_text_x=element_text(angle=90))
+    # + facet_wrap("~condition")
+    # log scale for y
+    + scale_y_log10()
+    + scale_x_log10()
+    # both axes bound to 1e-7 to 1e-1
+    # + coord_cartesian(xlim=[1e-7, 1e-1], ylim=[1e-7, 1e-1])
 )
 plot.show()
 ```
+
+Same plot for the true latent variables.
+
+```{python}
+df_plot = pd.DataFrame({"prot": P.flatten(), "mrna": R.flatten(), "gene": df_prot_filter.gene.to_list() * N_cond, "condition": df_meta_both.iloc[:, 1].to_list() * N_mrna})
+plot = (
+  ggplot(df_plot[df_plot.condition == df_plot.condition[0]], aes(x="prot", y="mrna")) + geom_point(alpha=0.5)
+  + scale_y_log10()
+  + scale_x_log10()
+  + xlab("P")
+  + ylab("R")
+)
+plot.show()
+```
+  
