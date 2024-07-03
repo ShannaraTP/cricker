@@ -297,20 +297,20 @@ print(mcmc_post.diagnose())
 ### Result
 
 The models were sampled for 1000 warmup and 1000 sampling samples.
-However, all samples were either divergent or reached max-treedepth.
+However, all samples were either divergent or reached the maximum treedepth.
 This would likely not be solved with increasing the adaptive delta
-the max-treedepth, since the output was quite catastrophic. The next
+or the maximum treedepth, since the output was quite catastrophic. The next
 step would be to try a different parametrization with a logistic
-normal distribution instead of a dirichlet, whic effectively
-translates to @eq-logistic-softmax,
+normal distribution instead of a Dirichlet distribution, which effectively
+translates to @eq-logistic-softmax:
 
 $$
 logR ~ \mathcal{N}(\mu, \sigma)
 R ~ \texttt{softmax}(logR)
 $${#eq-logistic-softmax}
 
-which also generates a stochastic vector but is more amenable
+which also generates a stochastic vector, but is more amenable
 to sampling and, especially, has $\mu$ and $\sigma$ parameters
-that are easier interpreted and calibrated than the concentration
+that are easier interpret and calibrate than the concentration
 prior of a Dirichlet distribution.
 
