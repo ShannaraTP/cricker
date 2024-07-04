@@ -5,6 +5,7 @@ reference-location: margin
 format:
   html:
     standalone: true
+    embed-resources: true
     toc: true
     code-fold: true
   docx: default
@@ -211,7 +212,7 @@ print([phi_prot_sim[cond, :].shape for cond in range(N_cond)])
 print([phi_prot_sim[cond, :].sum() for cond in range(N_cond)])
 ```
 
-Let's plot the things.
+Let's plot the generated data for the first condition.
 
 ```{python}
 from plotnine import *
@@ -258,6 +259,8 @@ simple_model = cmdstanpy.CmdStanModel(
 ```
 
 ```{python}
+#| echo: true
+#| eval: false
 import stanio
 
 def close_comp(x: np.ndarray):
@@ -305,12 +308,14 @@ normal distribution instead of a Dirichlet distribution, which effectively
 translates to @eq-logistic-softmax:
 
 $$
-logR ~ \mathcal{N}(\mu, \sigma)
-R ~ \texttt{softmax}(logR)
+\begin{align}
+logR \sim \mathcal{N}(\mu, \sigma) \\
+R = \texttt{softmax}(logR)
+\end{align}
 $${#eq-logistic-softmax}
 
 which also generates a stochastic vector, but is more amenable
 to sampling and, especially, has $\mu$ and $\sigma$ parameters
-that are easier interpret and calibrate than the concentration
+that are easier to interpret and calibrate than the concentration
 prior of a Dirichlet distribution.
 
